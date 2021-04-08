@@ -15,6 +15,15 @@ public class PlayerMove : MonoBehaviour
     bool isGrounded;
     public float jump;
 
+   public Transform playerTransform;
+   public Transform teleportToNewZone;
+   public Transform teleportToOldZone;
+
+    private void Start()
+    {
+       // playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -31,6 +40,7 @@ public class PlayerMove : MonoBehaviour
         Vector3 moveDirection = transform.right * x + transform.forward * z;
   
         playerController.Move(moveDirection * speed * Time.deltaTime);
+        
 
         if(Input.GetButtonDown("Jump") && isGrounded )
         {
@@ -38,7 +48,32 @@ public class PlayerMove : MonoBehaviour
             isGrounded = false;
         }
 
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            TeleportToNewZone();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            TeleportToOldZone();
+        }
+
         currentVelo.y += gravity * Time.deltaTime;
         playerController.Move(currentVelo * Time.deltaTime);
+    }
+
+
+
+    public void TeleportToNewZone()
+    {
+        Vector3 moveDir = new Vector3(-500, 0.5f, 6);
+        playerController.Move(moveDir);
+
+    }
+
+    public void TeleportToOldZone()
+    {
+        Vector3 moveDir = new Vector3(500, 0.5f, 6);
+        playerController.Move(moveDir);
     }
 }
